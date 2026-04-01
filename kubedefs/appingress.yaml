@@ -7,13 +7,13 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: kube.devopswithrohit.online
+  - host: kube8.devopswithrohit.online
     http:
       paths:
-      - path: /                # Added dash and 'path' key
-        pathType: Prefix       # Fixed capital 'T'
+      - path: /
+        pathType: Prefix
         backend:
           service:
-            name: vproapp-service
+            name: vproapp-service  # Ensure this matches your fixed SVC name
             port:
-              number: 8080
+              number: 8080         # The port your app container uses
