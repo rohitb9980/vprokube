@@ -1,4 +1,4 @@
-apVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vprodb
@@ -7,36 +7,36 @@ metadata:
 spec:
   replicas: 1
   selector:
-   matchlabels:
-    app: vprodb
+    matchLabels:
+      app: vprodb
   template:
-   metadata:
-    labels:
-     app: vprodb
-  spec:
-   containers:
-   - name: vprodb
-     image: vprocontainers/vprofiledb
-     volumeMounts:
-     - mountPath: /var/lib/mysql
-       name: vpro-db-data
-     ports:
-     - name: vprodb-port
-       containerPort: 3306
-     env:
-      - name: MYSQL_ROOT_PASSWORD:
-        valueFrom:
-          decretKeyRef:
-            name: app-secret
-            key: db-pass
-   volumes:
-     - name: vpro-db-data
-       persistentVolumeClaim:
-        claimName: db-pvc-claim
-   initContainers:
-   - name: busybox
-      image: busybox:latest
-      args: ["rm", "-rf", "/var/lib/mysql/lost+found"]
-      volumeMounts:
-      - mountPath: /var/lib/mysql
-        name: vpro-db-data
+    metadata:
+      labels:
+        app: vprodb
+    spec:
+      containers:
+      - name: vprodb
+        image: vprocontainers/vprofiledb
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: vpro-db-data
+        ports:
+        - name: vprodb-port
+          containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: db-pass
+      initContainers:      # Must be at the same level as containers
+      - name: busybox
+        image: busybox:latest
+        args: ["rm", "-rf", "/var/lib/mysql/lost+found"]
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: vpro-db-data
+      volumes:             # Must be at the same level as containers
+      - name: vpro-db-data
+        persistentVolumeClaim:
+          claimName: db-pvc-claim

@@ -1,18 +1,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: vpro-ingress 
+  name: vpro-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
   rules:
   - host: kube.devopswithrohit.online
     http:
-      paths: /
-      pathtype: Prefix
-      backend:
-        service:
-          name: vproapp-service
-          port:
-            number: 8080
+      paths:
+      - path: /                # Added dash and 'path' key
+        pathType: Prefix       # Fixed capital 'T'
+        backend:
+          service:
+            name: vproapp-service
+            port:
+              number: 8080
