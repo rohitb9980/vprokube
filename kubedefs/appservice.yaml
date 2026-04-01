@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: vproapp-sevice
+  name: vproapp-service  # Fixed typo: added the 'r'
 spec:
   selector:
     app: vproapp
